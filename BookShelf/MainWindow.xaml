@@ -47,7 +47,7 @@
                 <MenuItem Header="My library">
                     <MenuItem Header="Add new book"></MenuItem>
                     <MenuItem Header="Books"></MenuItem>
-                    <MenuItem Header="Authors"></MenuItem>
+                    <MenuItem Header="Authors" Click="authors_Click"></MenuItem>
                     <MenuItem Header="Publishers"></MenuItem>
                     <MenuItem Header="Categories"></MenuItem>
 

@@ -13,16 +13,14 @@ using System.Windows.Shapes;
 
 namespace BookShelf
 {
-    public partial class AddBook : Window
+    /// <summary>
+    /// Interaction logic for AuthorsWindow.xaml
+    /// </summary>
+    public partial class AuthorsWindow : Window
     {
-        public AddBook()
+        public AuthorsWindow()
         {
             InitializeComponent();
-        }
-
-        private void btnAdd_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

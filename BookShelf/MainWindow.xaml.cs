@@ -131,5 +131,12 @@ namespace BookShelf
             addBookWindow.Owner = this;
             addBookWindow.Show();
         }
+
+        private void authors_Click(object sender, RoutedEventArgs e)
+        {
+            var authorsWindow = new AuthorsWindow();
+            authorsWindow.Owner = this;
+            authorsWindow.Show();
+        }
     }
 }

@@ -118,6 +118,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AuthorsWindow.xaml.cs">
+      <DependentUpon>AuthorsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\AuthorsViewModel.cs" />
     <Compile Include="ViewModel\BookAddViewModel.cs" />
     <Compile Include="ViewModel\BooksViewModel.cs" />
     <Compile Include="BooleanVisiblityConverter.cs" />
@@ -163,6 +167,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="AddBook.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AuthorsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

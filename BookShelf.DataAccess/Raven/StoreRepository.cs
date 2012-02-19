@@ -33,7 +33,7 @@ namespace BookShelf.DataAccess.Raven
             get
             {
                 if (_Book == null)
-                    _Book = new BookShelf.DataAccess.Mock.BookStore();
+                    _Book = new BookStore();
                 return _Book;
             }
         }

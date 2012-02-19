@@ -1,5 +1,6 @@
 ﻿using System;
 using BookShelf.DataAccess.Interfaces;
+using BookShelf.DataAccess.Raven;
 
 namespace BookShelf.DataAccess.Mock
 {
