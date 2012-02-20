@@ -1,19 +1,29 @@
 ﻿using System;
 using BookShelf.DataAccess.Interfaces;
-using BookShelf.DataAccess.Raven;
 
 namespace BookShelf.DataAccess.Mock
 {
     public class StoreRepository
     {
-        private static IBookStore _Book = null;
+        private static IBookStore book = null;
         public static IBookStore Book
         {
             get
             {
-                if (_Book == null)
-                    _Book = new BookStore();
-                return _Book;
+                if (book == null)
+                    book = new BookStore();
+                return book;
+            }
+        }
+
+        private static IAuthorStore author = null;
+        public static IAuthorStore Author
+        {
+            get
+            {
+                if (author == null)
+                    author = new AuthorStore();
+                return author;
             }
         }
     }

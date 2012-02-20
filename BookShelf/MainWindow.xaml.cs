@@ -30,9 +30,12 @@ namespace BookShelf
         public MainWindow()
         {
             InitializeComponent();
-
             this.DataModel = new BooksViewModel();
+            DataBind();
+        }
 
+        private void DataBind()
+        {
             this.Source = CollectionViewSource.GetDefaultView(this.DataModel.Books);
             this.grdMain.DataContext = this.DataModel;
             this.lvItems.DataContext = this.Source;
@@ -40,91 +43,35 @@ namespace BookShelf
 
         private void ListView_Click(object sender, RoutedEventArgs e)
         {
-            GridViewColumnHeader currentHeader = e.OriginalSource as GridViewColumnHeader;
-            if (currentHeader != null && currentHeader.Role != GridViewColumnHeaderRole.Padding)
-            {
-                using (this.Source.DeferRefresh())
-                {
-                    Func<SortDescription, bool> lamda = item => item.PropertyName.Equals(currentHeader.Column.Header.ToString());
-                    if (this.Source.SortDescriptions.Count(lamda) > 0)
-                    {
-                        SortDescription currentSortDescription = this.Source.SortDescriptions.First(lamda);
-                        ListSortDirection sortDescription = currentSortDescription.Direction == ListSortDirection.Ascending ? ListSortDirection.Descending : ListSortDirection.Ascending;
-
-
-                        currentHeader.Column.HeaderTemplate = currentSortDescription.Direction == ListSortDirection.Ascending ?
-                            this.Resources["HeaderTemplateArrowDown"] as DataTemplate : this.Resources["HeaderTemplateArrowUp"] as DataTemplate;
-
-                        this.Source.SortDescriptions.Remove(currentSortDescription);
-                        this.Source.SortDescriptions.Insert(0, new SortDescription(currentHeader.Column.Header.ToString(), sortDescription));
-                    }
-                    else
-                        this.Source.SortDescriptions.Add(new SortDescription(currentHeader.Column.Header.ToString(), ListSortDirection.Ascending));
-                }
-
-
-            }
-
-
+            ListHelper.ListViewClick(e, this.Source, this.Resources);
         }
 
         private void btnFilter_Click(object sender, RoutedEventArgs e)
         {
-            this.Source.Filter = item =>
-            {
-                var viewItem = item as Book;
-                if (viewItem == null) return false;
-
-                PropertyInfo info = item.GetType().GetProperty(cmbProperty.Text);
-                if (info == null) return false;
-
-                return info.GetValue(viewItem, null).ToString().Contains(txtFilter.Text);
-
-            };
+            ListHelper.FilterClick<Book>(this.Source, cmbProperty, txtFilter);
         }
 
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
-            this.Source.Filter = item => true;
+            ListHelper.ClearClick(this.Source);
         }
 
         private void btnGroup_Click(object sender, RoutedEventArgs e)
         {
-            this.Source.GroupDescriptions.Clear();
-
-            PropertyInfo pinfo = typeof(Book).GetProperty(cmbGroups.Text);
-            if (pinfo != null)
-                this.Source.GroupDescriptions.Add(new PropertyGroupDescription(pinfo.Name));
-
+            ListHelper.GroupClick<Book>(this.Source, cmbGroups);
         }
 
         private void btnClearGr_Click(object sender, RoutedEventArgs e)
         {
-            this.Source.GroupDescriptions.Clear();
+            ListHelper.ClearGrClick(this.Source);
         }
 
         private void btnNavigation_Click(object sender, RoutedEventArgs e)
         {
-            Button CurrentButton = sender as Button;
-
-            switch (CurrentButton.Tag.ToString())
-            {
-                case "0":
-                    this.Source.MoveCurrentToFirst();
-                    break;
-                case "1":
-                    this.Source.MoveCurrentToPrevious();
-                    break;
-                case "2":
-                    this.Source.MoveCurrentToNext();
-                    break;
-                case "3":
-                    this.Source.MoveCurrentToLast();
-                    break;
-            }
-
+            ListHelper.NavigationClick(this.Source, sender);
         }
 
+        #region Elements manipulation
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             var addBookWindow = new AddBook();
@@ -132,11 +79,39 @@ namespace BookShelf
             addBookWindow.Show();
         }
 
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (lvItems.SelectedItem != null)
+            {
+            }
+        }
+
+        private void btnUpdate_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        #endregion
+
+        #region Menu clicks
         private void authors_Click(object sender, RoutedEventArgs e)
         {
             var authorsWindow = new AuthorsWindow();
             authorsWindow.Owner = this;
+            authorsWindow.Closed += new EventHandler(authorsWindow_Closed);
             authorsWindow.Show();
         }
+
+        void authorsWindow_Closed(object sender, EventArgs e)
+        {
+            DataModel.Refresh();
+            DataBind();
+        }
+
+        private void exit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+        #endregion
+
     }
 }

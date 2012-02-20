@@ -5,16 +5,24 @@ using System.Text;
 using BookShelf.Model;
 using BookShelf.Model.SearchParams;
 using BookShelf.DataAccess.Interfaces;
+using Raven.Client;
 
 namespace BookShelf.DataAccess.Raven
 {
     public class CategoryStore : Store<Category>, ICategoryStore
     {
+        private IDocumentStore documentStore;
+
+        public CategoryStore(IDocumentStore documentStore) : base(documentStore)
+        {
+            this.documentStore = documentStore;
+        }
+
         public List<Category> Search(CategorySearchParams searchParams)
         {
             var result = new List<Category>();
 
-            using (var session = DocumentStore.OpenSession())
+            using (var session = documentStore.OpenSession())
             {
                 IQueryable<Category> query = session.Query<Category>();
 

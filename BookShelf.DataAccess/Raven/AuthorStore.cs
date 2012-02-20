@@ -5,16 +5,24 @@ using System.Text;
 using BookShelf.Model;
 using BookShelf.Model.SearchParams;
 using BookShelf.DataAccess.Interfaces;
+using Raven.Client;
 
 namespace BookShelf.DataAccess.Raven
 {
     public class AuthorStore : Store<Author>, IAuthorStore
     {
+        private IDocumentStore documentStore;
+
+        public AuthorStore(IDocumentStore documentStore) : base(documentStore)
+        {
+            this.documentStore = documentStore;
+        }
+
         public List<Author> Search(PersonSearchParams searchParams)
         {
             var result = new List<Author>();
 
-            using (var session = DocumentStore.OpenSession())
+            using (var session = documentStore.OpenSession())
             {
                 IQueryable<Author> query = session.Query<Author>();
 

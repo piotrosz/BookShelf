@@ -10,14 +10,24 @@ namespace BookShelf.ViewModel
 {
     public class AuthorsViewModel
     {
+        public IEnumerable<string> ColumnNames
+        {
+            get { return typeof(Author).GetProperties().Select(p => p.Name); }
+        }
+
         private ObservableCollection<Author> authors;
         public ObservableCollection<Author> Authors
         {
             get
             {
-                this.authors = this.authors ?? new ObservableCollection<Author>(StoreRepository.Author.GetMax());
+                this.authors = this.authors ?? new ObservableCollection<Author>(StoreRepository.Author.Search(null));
                 return this.authors;
             }
+        }
+
+        public void Refresh()
+        {
+            this.authors = new ObservableCollection<Author>(StoreRepository.Author.Search(null));
         }
     }
 }

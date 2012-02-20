@@ -5,22 +5,33 @@ using System.Text;
 using BookShelf.Model;
 using BookShelf.Model.SearchParams;
 using BookShelf.DataAccess.Interfaces;
+using Raven.Client;
 
 namespace BookShelf.DataAccess.Raven
 {
     public class BookStore : Store<Book>, IBookStore
     {
+        private IDocumentStore documentStore;
+
+        public BookStore(IDocumentStore documentStore) : base(documentStore)
+        {
+            this.documentStore = documentStore;
+        }
+
         public List<Book> Search(BookSearchParams searchParams)
         {
             var result = new List<Book>();
 
-            using (var session = DocumentStore.OpenSession())
+            using (var session = documentStore.OpenSession())
             {
                 IQueryable<Book> query = session.Query<Book>();
 
-                if (searchParams.IsDefined(searchParams.Title))
+                if (searchParams != null)
                 {
-                    query = query.Where(b => b.Title.Contains(searchParams.Title));
+                    if (searchParams.IsDefined(searchParams.Title))
+                    {
+                        query = query.Where(b => b.Title.Contains(searchParams.Title));
+                    }
                 }
 
                 result = query
@@ -33,7 +44,7 @@ namespace BookShelf.DataAccess.Raven
 
         public void Remove(int id)
         {
-            using (var session = DocumentStore.OpenSession())
+            using (var session = documentStore.OpenSession())
             {
                 session.Advanced.DatabaseCommands.Delete("Books/" + id, null);
             }
@@ -41,7 +52,7 @@ namespace BookShelf.DataAccess.Raven
 
         public void RemoveMany(List<int> ids)
         {
-            using (var session = DocumentStore.OpenSession())
+            using (var session = documentStore.OpenSession())
             {
                 foreach (var item in ids)
                 {

@@ -16,7 +16,7 @@ namespace BookShelf.ViewModel
         {
             get
             {
-                this.books = this.books ?? new ObservableCollection<Book>(StoreRepository.Book.GetMax());
+                this.books = this.books ?? new ObservableCollection<Book>(StoreRepository.Book.Search(null));
                 return this.books;
             }
         }
@@ -28,7 +28,12 @@ namespace BookShelf.ViewModel
 
         public IEnumerable<Author> Authors
         {
-            get { return StoreRepository.Author.GetMax(); }
+            get { return StoreRepository.Author.Search(null); }
+        }
+
+        public void Refresh()
+        {
+            this.books = new ObservableCollection<Book>(StoreRepository.Book.Search(null));
         }
     }
 }

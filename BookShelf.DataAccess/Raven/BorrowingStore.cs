@@ -5,16 +5,24 @@ using System.Text;
 using BookShelf.Model;
 using BookShelf.Model.SearchParams;
 using BookShelf.DataAccess.Interfaces;
+using Raven.Client;
 
 namespace BookShelf.DataAccess.Raven
 {
     public class LendingStore : Store<Lending>, ILendingStore
     {
+        private IDocumentStore documentStore;
+
+        public LendingStore(IDocumentStore documentStore) : base(documentStore)
+        {
+            this.documentStore = documentStore;
+        }
+
         public List<Lending> Search(LendingSearchParams searchParams)
         {
             var result = new List<Lending>();
 
-            using (var session = DocumentStore.OpenSession())
+            using (var session = documentStore.OpenSession())
             {
                 IQueryable<Lending> query = session.Query<Lending>();
 

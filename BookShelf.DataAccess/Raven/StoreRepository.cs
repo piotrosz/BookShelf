@@ -1,17 +1,34 @@
 ﻿using System;
 using BookShelf.DataAccess.Interfaces;
+using Raven.Client.Embedded;
+using Raven.Client;
 
 namespace BookShelf.DataAccess.Raven
 {
     public static class StoreRepository
     {
+        private static IDocumentStore documentStore = null;
+        private static IDocumentStore DocumentStore
+        {
+            get
+            {
+                if (documentStore == null)
+                {
+                    documentStore = new EmbeddableDocumentStore { DataDirectory = "db" };
+                    documentStore.Initialize();
+                }
+
+                return documentStore;
+            }
+        }
+
         private static IPersonStore _Person = null;
         public static IPersonStore Person
         {
             get
             {
                 if (_Person == null)
-                    _Person = new PersonStore();
+                    _Person = new PersonStore(DocumentStore);
                 return _Person;
             }
         }
@@ -22,7 +39,7 @@ namespace BookShelf.DataAccess.Raven
             get
             {
                 if (_Category == null)
-                    _Category = new CategoryStore();
+                    _Category = new CategoryStore(DocumentStore);
                 return _Category;
             }
         }
@@ -33,7 +50,7 @@ namespace BookShelf.DataAccess.Raven
             get
             {
                 if (_Book == null)
-                    _Book = new BookStore();
+                    _Book = new BookStore(DocumentStore);
                 return _Book;
             }
         }
@@ -44,7 +61,7 @@ namespace BookShelf.DataAccess.Raven
             get
             {
                 if (_Author == null)
-                    _Author = new AuthorStore();
+                    _Author = new AuthorStore(DocumentStore);
                 return _Author;
             }
         }
@@ -55,7 +72,7 @@ namespace BookShelf.DataAccess.Raven
             get
             {
                 if (_Lending == null)
-                    _Lending = new LendingStore();
+                    _Lending = new LendingStore(DocumentStore);
                 return _Lending;
             }
         }
@@ -66,7 +83,7 @@ namespace BookShelf.DataAccess.Raven
             get
             {
                 if (_Publisher == null)
-                    _Publisher = new PublisherStore();
+                    _Publisher = new PublisherStore(DocumentStore);
                 return _Publisher;
             }
         }

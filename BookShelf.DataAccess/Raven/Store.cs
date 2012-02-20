@@ -12,25 +12,16 @@ namespace BookShelf.DataAccess.Raven
     {
         private const int MAX_ITEMS = 1000;
 
-        private static IDocumentStore documentStore = null;
+        private IDocumentStore documentStore;
 
-        protected IDocumentStore DocumentStore
+        public Store(IDocumentStore documentStore)
         {
-            get
-            {
-                if (documentStore == null)
-                {
-                    documentStore = new EmbeddableDocumentStore { DataDirectory = "db" };
-                    documentStore.Initialize();
-                }
-
-                return documentStore;
-            }
+            this.documentStore = documentStore;
         }
 
         public void Save(T entity)
         {
-            using (var session = DocumentStore.OpenSession())
+            using (var session = documentStore.OpenSession())
             {
                 session.Store(entity);
                 session.SaveChanges();
@@ -41,7 +32,7 @@ namespace BookShelf.DataAccess.Raven
         {
             T result = default(T);
 
-            using (var session = DocumentStore.OpenSession())
+            using (var session = documentStore.OpenSession())
             {
                 result = session.Load<T>(id);
             }
@@ -51,7 +42,7 @@ namespace BookShelf.DataAccess.Raven
 
         public void Delete(T entity)
         {
-            using (var session = DocumentStore.OpenSession())
+            using (var session = documentStore.OpenSession())
             {
                 session.Delete<T>(entity);
                 session.SaveChanges();
@@ -62,7 +53,7 @@ namespace BookShelf.DataAccess.Raven
         {
             var result = new List<T>();
 
-            using (var session = DocumentStore.OpenSession())
+            using (var session = documentStore.OpenSession())
             {
                 result = session.Query<T>().Take(MAX_ITEMS).ToList();
             }

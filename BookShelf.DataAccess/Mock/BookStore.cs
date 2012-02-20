@@ -8,7 +8,7 @@ using BookShelf.DataAccess.Interfaces;
 
 namespace BookShelf.DataAccess.Mock
 {
-    public class BookStore : IBookStore 
+    public class BookStore : IBookStore
     {
         private static List<Book> list = new List<Book>()
         {
@@ -73,12 +73,12 @@ namespace BookShelf.DataAccess.Mock
 
         public List<Book> Search(BookSearchParams searchParams)
         {
-            var result = new List<Book>();
+            var result = list;
 
             if (searchParams != null)
             {
                 if (searchParams.IsDefined(searchParams.Title))
-                    result = list.Where(x => x.Title.Contains(searchParams.Title)).ToList();
+                    result = result.Where(x => x.Title.Contains(searchParams.Title)).ToList();
             }
 
             return result;

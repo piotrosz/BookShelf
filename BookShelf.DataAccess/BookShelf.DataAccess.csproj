@@ -102,6 +102,7 @@
     <Compile Include="Interfaces\IEntityStore.cs" />
     <Compile Include="Interfaces\IPersonStore.cs" />
     <Compile Include="Interfaces\IPublisherStore.cs" />
+    <Compile Include="Mock\AuthorStore.cs" />
     <Compile Include="Mock\BookStore.cs" />
     <Compile Include="Mock\StoreRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

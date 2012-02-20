@@ -19,5 +19,7 @@ namespace BookShelf.ViewModel
                 return this.authors;
             }
         }
+
+        public Book Book = new Book();
     }
 }
