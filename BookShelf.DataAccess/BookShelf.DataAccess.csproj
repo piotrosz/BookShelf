@@ -104,6 +104,7 @@
     <Compile Include="Interfaces\IPublisherStore.cs" />
     <Compile Include="Mock\AuthorStore.cs" />
     <Compile Include="Mock\BookStore.cs" />
+    <Compile Include="Mock\CategoryStore.cs" />
     <Compile Include="Mock\StoreRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Raven\AuthorStore.cs" />

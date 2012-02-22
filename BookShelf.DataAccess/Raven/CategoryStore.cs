@@ -26,9 +26,11 @@ namespace BookShelf.DataAccess.Raven
             {
                 IQueryable<Category> query = session.Query<Category>();
 
-                if (searchParams.IsDefined(searchParams.Name))
-                    query = query.Where(c => c.Name.Contains(searchParams.Name));
-
+                if (searchParams != null)
+                {
+                    if (searchParams.IsDefined(searchParams.Name))
+                        query = query.Where(c => c.Name.Contains(searchParams.Name));
+                }
                 result = query.ToList();
             }
 

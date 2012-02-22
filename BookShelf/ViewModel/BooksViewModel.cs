@@ -5,7 +5,11 @@ using System.Text;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using BookShelf.Model;
+#if MOCK
+using BookShelf.DataAccess.Mock;
+#else
 using BookShelf.DataAccess.Raven;
+#endif
 
 namespace BookShelf.ViewModel
 {
@@ -16,7 +20,8 @@ namespace BookShelf.ViewModel
         {
             get
             {
-                this.books = this.books ?? new ObservableCollection<Book>(StoreRepository.Book.Search(null));
+                if (this.books == null)
+                    this.books = new ObservableCollection<Book>(StoreRepository.Book.Search(null));
                 return this.books;
             }
         }

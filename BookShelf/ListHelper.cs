@@ -48,7 +48,7 @@ namespace BookShelf
                 PropertyInfo info = item.GetType().GetProperty(cmbProperty.Text);
                 if (info == null) return false;
 
-                return info.GetValue(viewItem, null).ToString().Contains(txtFilter.Text);
+                return info.GetValue(viewItem, null).ToString().ToLower().Contains(txtFilter.Text.ToLower());
             };
         }
 
@@ -74,7 +74,7 @@ namespace BookShelf
 
         public static void NavigationClick(ICollectionView source, object sender)
         {
-            Button button = sender as Button;
+            var button = sender as Button;
 
             switch (button.Tag.ToString())
             {

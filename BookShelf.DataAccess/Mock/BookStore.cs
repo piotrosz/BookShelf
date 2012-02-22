@@ -23,7 +23,7 @@ namespace BookShelf.DataAccess.Mock
                 },
                 Categories = new List<Category>()
                 {
-                    new Category { Id = 1, Name = "Historical" },
+                    new Category { Id = 1, Name = "History" },
                     new Category { Id = 2, Name = "Culture" },
                     new Category { Id = 3, Name = "Russia" },
                     new Category { Id = 4, Name = "Non fiction" }
@@ -68,6 +68,24 @@ namespace BookShelf.DataAccess.Mock
                 NumberOfPages = 234,
                 Title = "Generation P",
                 Year = 2004
+            },
+            new Book
+            {
+                Id = 4,
+                Author = new Author
+                {
+                    Id = 3,
+                    FirstName = "Wiktor",
+                    LastName = "Pielewin"
+                },
+                Categories = new List<Category>()
+                {
+                    new Category { Id = 6, Name = "Novel" }
+                },
+                NumberOfPages = 405,
+                Title = "T",
+                TitleOriginal = "T",
+                Year = 2012
             }
         };
 

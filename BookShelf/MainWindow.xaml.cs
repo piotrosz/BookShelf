@@ -14,6 +14,11 @@ using System.ComponentModel;
 using System.Reflection;
 using BookShelf.ViewModel;
 using BookShelf.Model;
+#if MOCK
+using BookShelf.DataAccess.Mock;
+#else
+using BookShelf.DataAccess.Raven;
+#endif
 
 namespace BookShelf
 {
@@ -29,8 +34,8 @@ namespace BookShelf
 
         public MainWindow()
         {
-            InitializeComponent();
             this.DataModel = new BooksViewModel();
+            InitializeComponent();
             DataBind();
         }
 
@@ -41,6 +46,7 @@ namespace BookShelf
             this.lvItems.DataContext = this.Source;
         }
 
+        #region Grouping & filtering
         private void ListView_Click(object sender, RoutedEventArgs e)
         {
             ListHelper.ListViewClick(e, this.Source, this.Resources);
@@ -70,25 +76,43 @@ namespace BookShelf
         {
             ListHelper.NavigationClick(this.Source, sender);
         }
+        #endregion
 
         #region Elements manipulation
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             var addBookWindow = new AddBook();
             addBookWindow.Owner = this;
+            addBookWindow.Closed += new EventHandler(addBookWindow_Closed);
             addBookWindow.Show();
+        }
+
+        void addBookWindow_Closed(object sender, EventArgs e)
+        {
+            DataModel.Refresh();
+            DataBind();
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             if (lvItems.SelectedItem != null)
             {
+                var book = (Book)lvItems.SelectedItem;
+                StoreRepository.Book.Delete(book);
+                DataModel.Refresh();
+                DataBind();
             }
         }
 
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
-
+            if (lvItems.SelectedItem != null)
+            {
+                var book = (Book)lvItems.SelectedItem;
+                StoreRepository.Book.Save(book);
+                DataModel.Refresh();
+                DataBind();
+            }
         }
         #endregion
 
@@ -107,11 +131,44 @@ namespace BookShelf
             DataBind();
         }
 
+        private void categories_Click(object sender, RoutedEventArgs e)
+        {
+            var categoriesWindow = new CategoriesWindow();
+            categoriesWindow.Owner = this;
+            categoriesWindow.Closed += new EventHandler(categoriesWindow_Closed);
+            categoriesWindow.Show();
+        }
+
+        void categoriesWindow_Closed(object sender, EventArgs e)
+        {
+            DataModel.Refresh();
+            DataBind();
+        }
+
+        private void newLending_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void lendings_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void borrowers_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void about_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void exit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
         #endregion
-
     }
 }

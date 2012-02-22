@@ -11,8 +11,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using BookShelf.Model;
-using BookShelf.ViewModel;
-using BookShelf.DataAccess;
 #if MOCK
 using BookShelf.DataAccess.Mock;
 #else
@@ -21,12 +19,12 @@ using BookShelf.DataAccess.Raven;
 
 namespace BookShelf
 {
-    public partial class AddAuthor : Window
+    public partial class AddCategory : Window
     {
-        public AddAuthor()
+        public AddCategory()
         {
             InitializeComponent();
-            this.DataContext = new Author();
+            this.DataContext = new Category();
         }
 
         int noOfErrorsOnScreen = 0;
@@ -39,16 +37,16 @@ namespace BookShelf
                 noOfErrorsOnScreen--;
         }
 
-        private void AddAuthor_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void AddCategory_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = noOfErrorsOnScreen == 0;
             e.Handled = true;
         }
 
-        private void AddAuthor_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void AddCategory_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            var item = (Author)(this.DataContext);
-            StoreRepository.Author.Save(item);
+            var item = (Category)(this.DataContext);
+            StoreRepository.Category.Save(item);
             e.Handled = true;
             this.Close();
         }

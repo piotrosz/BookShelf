@@ -1,14 +1,15 @@
 ﻿<Window x:Class="BookShelf.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="BookShelf" Height="500" Width="701"
+        Title="BookShelf 1.0" Height="500"
         xmlns:local="clr-namespace:BookShelf"
-        Icon="images/bookshelf.ico" Name="mainWindow1">
+        Icon="images/bookshelf.ico" Name="mainWindow1"
+        SizeToContent="Width">
     <Window.Resources>
 
     </Window.Resources>
 
-    <Grid x:Name="grdWrapper" Width="672">
+    <Grid x:Name="grdWrapper">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -20,22 +21,23 @@
         <DockPanel Grid.Column="0" Grid.Row="0">
             <Menu IsMainMenu="True" Style="{StaticResource menuStyle}">
                 <MenuItem Header="My library" Style="{StaticResource menuItem}">
-                    <MenuItem Header="Add new book"></MenuItem>
-                    <MenuItem Header="Authors" Click="authors_Click"></MenuItem>
-                    <MenuItem Header="Publishers"></MenuItem>
-                    <MenuItem Header="Categories"></MenuItem>
-
+                    <MenuItem Header="Authors" Click="authors_Click" Style="{StaticResource menuItem}"></MenuItem>
+                    <MenuItem Header="Categories" Click="categories_Click" Style="{StaticResource menuItem}"></MenuItem>
+                    <MenuItem Header="Publishers" Style="{StaticResource menuItem}"></MenuItem>
                 </MenuItem>
                 <MenuItem Header="Lending" Style="{StaticResource menuItem}">
-                    <MenuItem Header="New lending"></MenuItem>
-                    <MenuItem Header="Lendings"></MenuItem>
-                    <MenuItem Header="Borrowers"></MenuItem>
+                    <MenuItem Header="New lending" Click="newLending_Click" Style="{StaticResource menuItem}"></MenuItem>
+                    <MenuItem Header="Lendings" Click="lendings_Click" Style="{StaticResource menuItem}"></MenuItem>
+                    <MenuItem Header="Borrowers" Click="borrowers_Click" Style="{StaticResource menuItem}"></MenuItem>
                 </MenuItem>
 
                 <MenuItem Header="Other" Style="{StaticResource menuItem}">
-                    <MenuItem Header="Export"></MenuItem>
-                    <MenuItem Header="About"></MenuItem>
-                    <MenuItem Header="Exit" Click="exit_Click"></MenuItem>
+                    <MenuItem Header="Export" Style="{StaticResource menuItem}">
+                        <MenuItem Header="HTML" Style="{StaticResource menuItem}"></MenuItem>
+                        <MenuItem Header="CSV" Style="{StaticResource menuItem}"></MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="About" Click="about_Click" Style="{StaticResource menuItem}"></MenuItem>
+                    <MenuItem Header="Exit" Click="exit_Click" Style="{StaticResource menuItem}"></MenuItem>
                 </MenuItem>
             </Menu>
         </DockPanel>
@@ -64,7 +66,8 @@
                 </GroupBox>
             </StackPanel>
             <ListView ItemsSource="{Binding}" x:Name="lvItems" GridViewColumnHeader.Click="ListView_Click" 
-                      IsSynchronizedWithCurrentItem="True" Grid.Row="1">
+                      IsSynchronizedWithCurrentItem="True" Grid.Row="1" 
+                      Style="{StaticResource listViewStyle}">
                 <ListView.GroupStyle>
                     <GroupStyle>
                         <GroupStyle.HeaderTemplate>
@@ -91,11 +94,9 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid>
-                                        <TextBlock Text="{Binding Path=Author.LastName}" Style="{StaticResource ListViewUnSelected}" />
-                                        <ComboBox SelectedItem="{Binding Path=Author.LastName}" ItemsSource="{Binding ElementName=mainWindow1, Path=Authors}" Style="{StaticResource ListViewSelected}" 
+                                        <TextBlock  Text="{Binding Path=Author.FullName}" Style="{StaticResource ListViewUnSelected}" />
+                                        <ComboBox SelectedItem="{Binding Path=Author.Id}" ItemsSource="{Binding ElementName=mainWindow1, Path=Authors}" Style="{StaticResource ListViewSelected}" 
                                                   DisplayMemberPath="FullName" SelectedIndex="0">
-
-
                                         </ComboBox>
                                     </Grid>
                                 </DataTemplate>
@@ -105,7 +106,7 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid>
-                                        <Image Source="{Binding Path=Image}"/>
+                                        
                                     </Grid>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
@@ -118,7 +119,7 @@
                 <Button Content="&lt;" Click="btnNavigation_Click" Tag="1" Style="{StaticResource buttonStyle}" />
                 <Button Content="&gt;" Click="btnNavigation_Click" Tag="2" Style="{StaticResource buttonStyle}"/>
                 <Button Content="|&gt;" Click="btnNavigation_Click" Tag="3" Style="{StaticResource buttonStyle}" />
-                <Button HorizontalAlignment="Right" Style="{StaticResource buttonStyle}" x:Name="btnAdd" Content="Add new" Click="btnAdd_Click" />
+                <Button HorizontalAlignment="Right" Style="{StaticResource buttonStyle}" x:Name="btnAdd" Content="Add" Click="btnAdd_Click" />
                 <Button HorizontalAlignment="Right" Style="{StaticResource buttonStyle}" x:Name="btnUpdate" Content="Update selected" Click="btnUpdate_Click"/>
                 <Button HorizontalAlignment="Right" Style="{StaticResource buttonStyle}" x:Name="btnDelete" Content="Delete selected" Click="btnDelete_Click"/>
             </StackPanel>

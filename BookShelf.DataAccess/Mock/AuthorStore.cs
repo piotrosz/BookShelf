@@ -39,17 +39,23 @@ namespace BookShelf.DataAccess.Mock
 
         public void Save(Author entity)
         {
-            throw new NotImplementedException();
+            if (Get(entity.Id) == null)
+                list.Add(entity);
+            else
+            {
+                var toUpdate = Get(entity.Id);
+                toUpdate = entity;
+            }
         }
 
         public Author Get(int id)
         {
-            throw new NotImplementedException();
+            return list.SingleOrDefault(x => x.Id == id);
         }
 
         public void Delete(Author entity)
         {
-            throw new NotImplementedException();
+            list.Remove(entity);
         }
 
         public List<Author> GetMax()

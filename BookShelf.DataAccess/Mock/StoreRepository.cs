@@ -26,5 +26,16 @@ namespace BookShelf.DataAccess.Mock
                 return author;
             }
         }
+
+        private static ICategoryStore category = null;
+        public static ICategoryStore Category
+        {
+            get
+            {
+                if (category == null)
+                    category = new CategoryStore();
+                return category;
+            }
+        }
     }
 }
