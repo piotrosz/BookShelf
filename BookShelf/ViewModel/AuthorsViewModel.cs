@@ -26,9 +26,17 @@ namespace BookShelf.ViewModel
             }
         }
 
-        public IEnumerable<string> ColumnNames
+        public IEnumerable<Tuple<string, string>> ColumnNames
         {
-            get { return typeof(Author).GetProperties().Select(p => p.Name); }
+            get
+            {
+                return new List<Tuple<string, string>>
+                {
+                    new Tuple<string, string>("FirstName", "First name"),
+                    new Tuple<string, string>("LastName", "Last name")
+                };
+                //return typeof(Author).GetProperties().Select(p => p.Name); 
+            }
         }
 
         public void Refresh()

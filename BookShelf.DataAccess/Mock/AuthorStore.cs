@@ -10,6 +10,7 @@ namespace BookShelf.DataAccess.Mock
 {
     public class AuthorStore : IAuthorStore
     {
+        #region static list
         private static List<Author> list = new List<Author>()
         {
             new Author 
@@ -31,6 +32,7 @@ namespace BookShelf.DataAccess.Mock
                 LastName = "Pielewin"
             }
         };
+        #endregion
 
         public List<Author> Search(PersonSearchParams searchParams)
         {
@@ -53,9 +55,9 @@ namespace BookShelf.DataAccess.Mock
             return list.SingleOrDefault(x => x.Id == id);
         }
 
-        public void Delete(Author entity)
+        public void Delete(IEntity entity)
         {
-            list.Remove(entity);
+            list.Remove(entity as Author);
         }
 
         public List<Author> GetMax()

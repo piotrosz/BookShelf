@@ -29,8 +29,7 @@
         <Label Grid.Column="0" Grid.Row="3">Description</Label>
         <Label Grid.Column="0" Grid.Row="4">Categories</Label>
 
-        <TextBox Grid.Column="1" Grid.Row="0" Validation.Error="Validation_Error"
-         Style="{StaticResource textBoxStyle}">
+        <TextBox Grid.Column="1" Grid.Row="0" Validation.Error="Validation_Error">
             <TextBox.Text>
                 <Binding Path="Title" UpdateSourceTrigger="PropertyChanged"
                  ValidatesOnDataErrors="True" NotifyOnValidationError="True">
@@ -39,8 +38,8 @@
         </TextBox>
 
         <ComboBox Grid.Column="1" Grid.Row="1" x:Name="cbAuthors"
-         Style="{StaticResource comboBoxStyle}" ItemsSource="{Binding ElementName=addBookWindow1, Path=Authors}"
-         DisplayMemberPath="FullName" SelectedIndex="0">
+         ItemsSource="{Binding ElementName=addBookWindow1, Path=Authors}"
+         DisplayMemberPath="FullName" SelectedIndex="1">
             <ComboBox.SelectedItem>
                 <Binding Path="Author"></Binding>
             </ComboBox.SelectedItem>
@@ -49,12 +48,11 @@
         <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical">
             <Image x:Name="image1" Width="200" HorizontalAlignment="Left">
             </Image>
-            <Button Width="84" HorizontalAlignment="Left" Click="chooseImage_Click" Style="{StaticResource buttonStyle}"
+            <Button Width="84" HorizontalAlignment="Left" Click="chooseImage_Click"
                     Margin="8,5,0,5">Choose image</Button>
         </StackPanel>
 
         <TextBox Grid.Column="1" Grid.Row="3"
-         Style="{StaticResource textBoxStyle}"
          TextWrapping="Wrap"
          VerticalScrollBarVisibility="Visible"
          AcceptsReturn="True" Height="100">
@@ -73,8 +71,7 @@
             </ListBox.SelectedItem>
         </ListBox>
 
-
         <Button Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Right" Width="200"
-         Style="{StaticResource buttonStyle}" Command="New">Add</Button>
+         Command="New">Add</Button>
     </Grid>
 </Window>

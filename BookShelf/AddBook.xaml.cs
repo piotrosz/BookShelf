@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,7 @@ using BookShelf.Model;
 using BookShelf.DataAccess.Mock;
 #else
 using BookShelf.DataAccess.Raven;
+
 #endif
 
 namespace BookShelf
@@ -29,6 +31,11 @@ namespace BookShelf
         {
             this.DataModel = new BookAddViewModel();
             InitializeComponent();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.DataContext = new Book();
         }
 
         public IEnumerable<Author> Authors
@@ -61,6 +68,7 @@ namespace BookShelf
         {
             var item = (Book)(this.DataContext);
 
+            // TODO: How to do it using binding?
             item.Categories = new List<Category>();
             foreach (Category c in lbCategories.SelectedItems)
                 item.Categories.Add(c);
@@ -68,11 +76,6 @@ namespace BookShelf
             StoreRepository.Book.Save(item);
             e.Handled = true;
             this.Close();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            this.DataContext = new Book();
         }
 
         private void chooseImage_Click(object sender, RoutedEventArgs e)
@@ -91,27 +94,33 @@ namespace BookShelf
 
                 using (Bitmap bitmap = (Bitmap)Bitmap.FromFile(filename))
                 {
-                    ((Book)this.DataContext).Image = bitmap;
-                    // Create source
-                    BitmapImage myBitmapImage = new BitmapImage();
+                    using (Bitmap bitmap2 = bitmap.Scale(new System.Drawing.Size(200, 200)))
+                    {
+                        // Create source
+                        BitmapImage myBitmapImage = new BitmapImage();
 
-                    // BitmapImage.UriSource must be in a BeginInit/EndInit block
-                    myBitmapImage.BeginInit();
-                    myBitmapImage.UriSource = new Uri(filename);
+                        // BitmapImage.UriSource must be in a BeginInit/EndInit block
+                        myBitmapImage.BeginInit();
+                        myBitmapImage.UriSource = new Uri(filename);
 
-                    // To save significant application memory, set the DecodePixelWidth or  
-                    // DecodePixelHeight of the BitmapImage value of the image source to the desired 
-                    // height or width of the rendered image. If you don't do this, the application will 
-                    // cache the image as though it were rendered as its normal size rather then just 
-                    // the size that is displayed.
-                    // Note: In order to preserve aspect ratio, set DecodePixelWidth
-                    // or DecodePixelHeight but not both.
-                    myBitmapImage.DecodePixelWidth = 200;
-                    myBitmapImage.EndInit();
+                        // To save significant application memory, set the DecodePixelWidth or  
+                        // DecodePixelHeight of the BitmapImage value of the image source to the desired 
+                        // height or width of the rendered image. If you don't do this, the application will 
+                        // cache the image as though it were rendered as its normal size rather then just 
+                        // the size that is displayed.
+                        // Note: In order to preserve aspect ratio, set DecodePixelWidth
+                        // or DecodePixelHeight but not both.
+                        myBitmapImage.DecodePixelWidth = 200;
+                        myBitmapImage.EndInit();
+                        image1.Source = myBitmapImage;
 
-                    image1.Source = myBitmapImage;
-                    ((Book)DataContext).Image = bitmap;
-                    this.Height += image1.Height;
+                        using (MemoryStream stream = new MemoryStream())
+                        {
+                            bitmap2.Save(stream, System.Drawing.Imaging.ImageFormat.Jpeg);
+                            Byte[] bytes = stream.ToArray();
+                            ((Book)DataContext).Image = bytes;
+                        }
+                    }
                 }
             }
         }

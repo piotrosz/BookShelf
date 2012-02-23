@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -12,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.ComponentModel;
 using System.Reflection;
+using System.Drawing;
 using BookShelf.ViewModel;
 using BookShelf.Model;
 #if MOCK
@@ -32,9 +34,18 @@ namespace BookShelf
             get { return this.DataModel.Authors; }
         }
 
+        public IEnumerable<Category> Categories
+        {
+            get { return this.DataModel.Categories; }
+        }
+
         public MainWindow()
         {
             this.DataModel = new BooksViewModel();
+
+            if (this.DataModel.Books == null || this.DataModel.Books.Count == 0)
+                StoreRepository.InsertInitialData();
+
             InitializeComponent();
             DataBind();
         }
@@ -83,11 +94,11 @@ namespace BookShelf
         {
             var addBookWindow = new AddBook();
             addBookWindow.Owner = this;
-            addBookWindow.Closed += new EventHandler(addBookWindow_Closed);
-            addBookWindow.Show();
+            addBookWindow.Closing += new CancelEventHandler(addBookWindow_Closing);
+            addBookWindow.ShowDialog();
         }
 
-        void addBookWindow_Closed(object sender, EventArgs e)
+        void addBookWindow_Closing(object sender, CancelEventArgs e)
         {
             DataModel.Refresh();
             DataBind();
@@ -147,22 +158,46 @@ namespace BookShelf
 
         private void newLending_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageBox.Show("Not implemented");
         }
 
         private void lendings_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageBox.Show("Not implemented");
         }
 
         private void borrowers_Click(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show("Not implemented");
+        }
 
+        private void publishers_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Not implemented");
         }
 
         private void about_Click(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show("Not implemented");
+        }
 
+        private void exportHtml_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Not implemented");
+        }
+
+        private void exportCsv_Click(object sender, RoutedEventArgs e)
+        {
+            StringBuilder sbCsv = new StringBuilder();
+            foreach (var item in DataModel.Books)
+            {
+                sbCsv.AppendFormat("{0};{1};{2}", item.Title, item.Author.FullName, item.CategoriesCsv);
+                sbCsv.AppendLine();
+            }
+            string fileName = System.IO.Path.Combine(Environment.SpecialFolder.Desktop.ToString(), "export.txt");
+            File.WriteAllText(fileName, sbCsv.ToString());
+            MessageBox.Show(string.Format("Books exported to: {0}", fileName), "Info", MessageBoxButton.OK, MessageBoxImage.Information,
+                MessageBoxResult.OK, MessageBoxOptions.None);
         }
 
         private void exit_Click(object sender, RoutedEventArgs e)
@@ -170,5 +205,52 @@ namespace BookShelf
             this.Close();
         }
         #endregion
+
+        private void btnChooseImage_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog();
+
+            dialog.DefaultExt = ".jpg";
+            dialog.Filter = "Images (.jpg)|*.jpg";
+            dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+
+            bool? result = dialog.ShowDialog();
+
+            if (result == true)
+            {
+                string filename = dialog.FileName;
+
+                using (Bitmap bitmap = (Bitmap)Bitmap.FromFile(filename))
+                {
+                    using (Bitmap bitmap2 = bitmap.Scale(new System.Drawing.Size(200, 200)))
+                    {
+                        // Create source
+                        BitmapImage myBitmapImage = new BitmapImage();
+
+                        // BitmapImage.UriSource must be in a BeginInit/EndInit block
+                        myBitmapImage.BeginInit();
+                        myBitmapImage.UriSource = new Uri(filename);
+
+                        // To save significant application memory, set the DecodePixelWidth or  
+                        // DecodePixelHeight of the BitmapImage value of the image source to the desired 
+                        // height or width of the rendered image. If you don't do this, the application will 
+                        // cache the image as though it were rendered as its normal size rather then just 
+                        // the size that is displayed.
+                        // Note: In order to preserve aspect ratio, set DecodePixelWidth
+                        // or DecodePixelHeight but not both.
+                        myBitmapImage.DecodePixelWidth = 200;
+                        myBitmapImage.EndInit();
+
+                        using (MemoryStream stream = new MemoryStream())
+                        {
+                            bitmap2.Save(stream, System.Drawing.Imaging.ImageFormat.Jpeg);
+                            Byte[] bytes = stream.ToArray();
+                            ((Book)DataContext).Image = bytes;
+                            //(Book)lvItems.SelectedItem
+                        }
+                    }
+                }
+            }
+        }
     }
 }

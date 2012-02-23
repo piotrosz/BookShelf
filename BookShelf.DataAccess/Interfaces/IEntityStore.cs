@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BookShelf.Model;
 
 namespace BookShelf.DataAccess.Interfaces
 {
@@ -7,7 +8,7 @@ namespace BookShelf.DataAccess.Interfaces
     {
         void Save(T entity);
         T Get(int id);
-        void Delete(T entity);
+        void Delete(IEntity entity);
         List<T> GetMax();
     }
 }

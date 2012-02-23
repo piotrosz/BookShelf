@@ -6,7 +6,7 @@ namespace BookShelf.Model.SearchParams
     {
         public bool IsDefined(string value)
         {
-            return string.IsNullOrWhiteSpace(value);
+            return !string.IsNullOrWhiteSpace(value);
         }
 
         public bool IsDefined(int? value)

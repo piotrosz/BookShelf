@@ -10,6 +10,7 @@ namespace BookShelf.DataAccess.Mock
 {
     public class CategoryStore : ICategoryStore
     {
+        #region static list
         private static List<Category> list = new List<Category>()
         {
             new Category { Id = 1, Name = "History" },
@@ -18,7 +19,8 @@ namespace BookShelf.DataAccess.Mock
             new Category { Id = 4, Name = "Non fiction" },
             new Category { Id = 5, Name = "Biography" },
             new Category { Id = 6, Name = "Novel" }
-        };
+        }; 
+        #endregion
 
         public List<Category> Search(CategorySearchParams searchParams)
         {
@@ -41,9 +43,9 @@ namespace BookShelf.DataAccess.Mock
             return list.SingleOrDefault(x => x.Id == id);
         }
 
-        public void Delete(Category entity)
+        public void Delete(IEntity entity)
         {
-            list.Remove(entity);
+            list.Remove(entity as Category);
         }
 
         public List<Category> GetMax()

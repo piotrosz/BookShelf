@@ -77,11 +77,11 @@ namespace BookShelf
         {
             var addWindow = new AddCategory();
             addWindow.Owner = this;
-            addWindow.Closed += new EventHandler(addWindow_Closed);
-            addWindow.Show();
+            addWindow.Closing += new CancelEventHandler(addWindow_Closing);
+            addWindow.ShowDialog();
         }
 
-        void addWindow_Closed(object sender, EventArgs e)
+        void addWindow_Closing(object sender, CancelEventArgs e)
         {
             DataModel.Refresh();
             DataBind();

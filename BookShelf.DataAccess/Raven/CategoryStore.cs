@@ -29,7 +29,7 @@ namespace BookShelf.DataAccess.Raven
                 if (searchParams != null)
                 {
                     if (searchParams.IsDefined(searchParams.Name))
-                        query = query.Where(c => c.Name.Contains(searchParams.Name));
+                        query = query.Where(c => c.Name == searchParams.Name);
                 }
                 result = query.ToList();
             }

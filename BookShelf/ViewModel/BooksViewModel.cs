@@ -26,14 +26,28 @@ namespace BookShelf.ViewModel
             }
         }
 
-        public IEnumerable<string> ColumnNames
+        public IEnumerable<Tuple<string, string>> ColumnNames
         {
-            get { return typeof(Book).GetProperties().Select(p => p.Name); }
+            get
+            {
+                return new List<Tuple<string, string>>
+                {
+                    new Tuple<string, string>("Title", "Title"),
+                    new Tuple<string, string>("Author", "Author"),
+                    new Tuple<string, string>("CategoriesCsv", "Category")
+                };
+                //return typeof(Book).GetProperties().Select(p => p.Name); 
+            }
         }
 
         public IEnumerable<Author> Authors
         {
             get { return StoreRepository.Author.Search(null); }
+        }
+
+        public IEnumerable<Category> Categories
+        {
+            get { return StoreRepository.Category.Search(null); }
         }
 
         public void Refresh()

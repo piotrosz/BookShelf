@@ -37,5 +37,7 @@ namespace BookShelf.DataAccess.Mock
                 return category;
             }
         }
+
+        public static void InsertInitialData() { }
     }
 }

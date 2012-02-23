@@ -45,8 +45,11 @@ namespace BookShelf
                 var viewItem = item as T;
                 if (viewItem == null) return false;
 
-                PropertyInfo info = item.GetType().GetProperty(cmbProperty.Text);
-                if (info == null) return false;
+                Tuple<string, string> tuple = (Tuple<string, string>)cmbProperty.SelectedItem;
+                PropertyInfo info = item.GetType().GetProperty(tuple.Item1);
+
+                if (info == null)
+                    return false;
 
                 return info.GetValue(viewItem, null).ToString().ToLower().Contains(txtFilter.Text.ToLower());
             };

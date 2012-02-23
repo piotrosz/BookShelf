@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace BookShelf.Model
 {
-    public class Lending : IDataErrorInfo
+    public class Lending : IDataErrorInfo, IEntity
     {
         public int Id { get; set; }
         public Person Person { get; set; }

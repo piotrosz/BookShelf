@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace BookShelf.Model
 {
-    public class Person : IComparable, IDataErrorInfo
+    public class Person : IComparable, IDataErrorInfo, IEntity
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

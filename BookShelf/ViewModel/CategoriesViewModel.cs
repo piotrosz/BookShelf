@@ -19,15 +19,21 @@ namespace BookShelf.ViewModel
         {
             get
             {
-                if(this.categories == null)
+                if (this.categories == null)
                     this.categories = new ObservableCollection<Category>(StoreRepository.Category.Search(null));
                 return this.categories;
             }
         }
 
-        public IEnumerable<string> ColumnNames
+        public IEnumerable<Tuple<string, string>> ColumnNames
         {
-            get { return typeof(Category).GetProperties().Select(p => p.Name); }
+            get
+            {
+                return new List<Tuple<string, string>>
+                {
+                    new Tuple<string, string>("Name", "Name"),
+                };
+            }
         }
 
         public void Refresh()

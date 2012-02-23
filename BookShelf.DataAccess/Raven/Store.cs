@@ -40,11 +40,12 @@ namespace BookShelf.DataAccess.Raven
             return result;
         }
 
-        public void Delete(T entity)
+        public void Delete(IEntity entity) 
         {
             using (var session = documentStore.OpenSession())
             {
-                session.Delete<T>(entity);
+                T toDelete = session.Load<T>(entity.Id);
+                session.Delete<T>(toDelete);
                 session.SaveChanges();
             }
         }

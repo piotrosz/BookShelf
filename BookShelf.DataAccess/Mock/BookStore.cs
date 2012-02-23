@@ -5,11 +5,13 @@ using System.Text;
 using BookShelf.Model;
 using BookShelf.Model.SearchParams;
 using BookShelf.DataAccess.Interfaces;
+using System.IO;
 
 namespace BookShelf.DataAccess.Mock
 {
     public class BookStore : IBookStore
     {
+        #region static list
         private static List<Book> list = new List<Book>()
         {
             new Book
@@ -67,7 +69,8 @@ namespace BookShelf.DataAccess.Mock
                 },
                 NumberOfPages = 234,
                 Title = "Generation P",
-                Year = 2004
+                Year = 2004//,
+                //Image = File.ReadAllBytes(@"H:\img1.jpg")
             },
             new Book
             {
@@ -87,7 +90,8 @@ namespace BookShelf.DataAccess.Mock
                 TitleOriginal = "T",
                 Year = 2012
             }
-        };
+        }; 
+        #endregion
 
         public List<Book> Search(BookSearchParams searchParams)
         {
@@ -133,9 +137,9 @@ namespace BookShelf.DataAccess.Mock
             return list.SingleOrDefault(x => x.Id == id);
         }
 
-        public void Delete(Book entity)
+        public void Delete(IEntity entity)
         {
-            list.Remove(entity);
+            list.Remove(entity as Book);
         }
 
         public List<Book> GetMax()

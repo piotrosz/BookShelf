@@ -20,8 +20,7 @@
 
         <Label Grid.Column="0" Grid.Row="0">Name</Label>
 
-        <TextBox Grid.Column="1" Grid.Row="0" Validation.Error="Validation_Error"
-         Style="{StaticResource textBoxStyle}">
+        <TextBox Grid.Column="1" Grid.Row="0" Validation.Error="Validation_Error">
             <TextBox.Text>
                 <Binding Path="Name" UpdateSourceTrigger="PropertyChanged"
                  ValidatesOnDataErrors="True" NotifyOnValidationError="True">
@@ -30,6 +29,6 @@
         </TextBox>
 
         <Button Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Right" Width="200"
-                 Style="{StaticResource buttonStyle}" Command="New">Add</Button>
+         Command="New">Add</Button>
     </Grid>
 </Window>

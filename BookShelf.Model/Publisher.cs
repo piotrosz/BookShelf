@@ -3,9 +3,9 @@ using System.ComponentModel;
 
 namespace BookShelf.Model
 {
-    public class Publisher : IDataErrorInfo
+    public class Publisher : IDataErrorInfo, IEntity
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
 
         public string Error

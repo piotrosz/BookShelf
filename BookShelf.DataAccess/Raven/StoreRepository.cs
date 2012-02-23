@@ -1,7 +1,11 @@
 ﻿using System;
-using BookShelf.DataAccess.Interfaces;
+using System.Collections.Generic;
 using Raven.Client.Embedded;
 using Raven.Client;
+using BookShelf.Model;
+using BookShelf.Model.SearchParams;
+using BookShelf.DataAccess.Interfaces;
+using System.IO;
 
 namespace BookShelf.DataAccess.Raven
 {
@@ -22,70 +26,129 @@ namespace BookShelf.DataAccess.Raven
             }
         }
 
-        private static IPersonStore _Person = null;
+        private static IPersonStore person = null;
         public static IPersonStore Person
         {
             get
             {
-                if (_Person == null)
-                    _Person = new PersonStore(DocumentStore);
-                return _Person;
+                if (person == null)
+                    person = new PersonStore(DocumentStore);
+                return person;
             }
         }
 
-        private static ICategoryStore _Category = null;
+        private static ICategoryStore category = null;
         public static ICategoryStore Category
         {
             get
             {
-                if (_Category == null)
-                    _Category = new CategoryStore(DocumentStore);
-                return _Category;
+                if (category == null)
+                    category = new CategoryStore(DocumentStore);
+                return category;
             }
         }
 
-        private static IBookStore _Book = null;
+        private static IBookStore book = null;
         public static IBookStore Book
         {
             get
             {
-                if (_Book == null)
-                    _Book = new BookStore(DocumentStore);
-                return _Book;
+                if (book == null)
+                    book = new BookStore(DocumentStore);
+                return book;
             }
         }
 
-        private static IAuthorStore _Author = null;
+        private static IAuthorStore author = null;
         public static IAuthorStore Author
         {
             get
             {
-                if (_Author == null)
-                    _Author = new AuthorStore(DocumentStore);
-                return _Author;
+                if (author == null)
+                    author = new AuthorStore(DocumentStore);
+                return author;
             }
         }
 
-        private static ILendingStore _Lending = null;
+        private static ILendingStore lending = null;
         public static ILendingStore Lending
         {
             get
             {
-                if (_Lending == null)
-                    _Lending = new LendingStore(DocumentStore);
-                return _Lending;
+                if (lending == null)
+                    lending = new LendingStore(DocumentStore);
+                return lending;
             }
         }
 
-        private static IPublisherStore _Publisher = null;
+        private static IPublisherStore publisher = null;
         public static IPublisherStore Publisher
         {
             get
             {
-                if (_Publisher == null)
-                    _Publisher = new PublisherStore(DocumentStore);
-                return _Publisher;
+                if (publisher == null)
+                    publisher = new PublisherStore(DocumentStore);
+                return publisher;
             }
+        }
+
+        public static void InsertInitialData()
+        {
+            Category.Save(new Category { Name = "Novel" });
+            Category.Save(new Category { Name = "Non fiction" });
+            Category.Save(new Category { Name = "Biography" });
+            Category.Save(new Category { Name = "Russia" });
+            Category.Save(new Category { Name = "History" });
+
+            Author.Save(new Author { FirstName = "Orlando", LastName = "Figes" });
+            Author.Save(new Author { FirstName = "Wiktor", LastName = "Pielewin" });
+            Author.Save(new Author { FirstName = "Lew", LastName = "Tołstoj" });
+            Author.Save(new Author { FirstName = "Tadeusz", LastName = "Konwicki" });
+            Author.Save(new Author { FirstName = "Miron", LastName = "Białoszewski" });
+
+            Publisher.Save(new Publisher { Name = "WAB" });
+            Publisher.Save(new Publisher { Name = "Czarne" });
+            Publisher.Save(new Publisher { Name = "Zak" });
+            Publisher.Save(new Publisher { Name = "WL" });
+
+            Book.Save(new Book
+            {
+                Author = Author.Search(new PersonSearchParams { LastName = "Pielewin" })[0],
+                Categories = new List<Category>
+                {
+                    Category.Search(new CategorySearchParams { Name = "Novel" })[0]
+                },
+                Description = "postmodernistic pulp",
+                NumberOfPages = 406,
+                Title = "T",
+                TitleOriginal = "T",
+                Year = 2012,
+                Image = File.ReadAllBytes(@"H:\img1.jpg")
+            });
+            Book.Save(new Book
+            {
+                Author = Author.Search(new PersonSearchParams { LastName = "Figes" })[0],
+                Categories = new List<Category>
+                {
+                    Category.Search(new CategorySearchParams { Name = "Russia" })[0],
+                    Category.Search(new CategorySearchParams { Name = "History" })[0]
+                },
+                Title = "Taniec Nataszy",
+                Year = 2011,
+                Description = "Cultural Russia history, XIX-XX",
+                Image = File.ReadAllBytes(@"H:\img2.jpg")
+            });
+            Book.Save(new Book
+            {
+                Author = Author.Search(new PersonSearchParams { LastName = "Konwicki" })[0],
+                Categories = new List<Category>
+                {
+                    Category.Search(new CategorySearchParams { Name = "Non fiction" })[0]
+                },
+                Title = "W pośpiechu",
+                Year = 2011,
+                Image = File.ReadAllBytes(@"H:\img3.jpg")
+            });
         }
     }
 }

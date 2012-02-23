@@ -29,9 +29,9 @@ namespace BookShelf.DataAccess.Raven
                 if (searchParams != null)
                 {
                     if (searchParams.IsDefined(searchParams.FirstName))
-                        query = query.Where(a => a.FirstName.Contains(searchParams.FirstName));
+                        query = query.Where(a => a.FirstName == searchParams.FirstName);
                     if (searchParams.IsDefined(searchParams.LastName))
-                        query = query.Where(a => a.LastName.Contains(searchParams.LastName));
+                        query = query.Where(a => a.LastName == searchParams.LastName);
                 }
 
                 result = query.ToList();

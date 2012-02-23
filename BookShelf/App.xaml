@@ -5,116 +5,37 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:vm="clr-namespace:BookShelf" mc:Ignorable="d"
              xmlns:local="clr-namespace:BookShelf">
     <Application.Resources>
-        <local:BooleanVisiblityConverter x:Key="convVis"/>
-
-        <Style x:Key="ListViewUnSelected" TargetType="{x:Type TextBlock}">
-            <Setter Property="Visibility" Value="{Binding Path=IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Converter={StaticResource convVis}, ConverterParameter=False}" />
-        </Style>
-        <Style x:Key="ListViewSelected" TargetType="{x:Type FrameworkElement}">
-            <Setter Property="Visibility" Value="{Binding Path=IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Converter={StaticResource convVis}, ConverterParameter=True}" />
-        </Style>
-
-        <DataTemplate x:Key="HeaderTemplateArrowUp">
-            <DockPanel>
-                <TextBlock HorizontalAlignment="Center" Text="{Binding}"/>
-                <Path  x:Name="arrow"
-                       StrokeThickness = "1"
-                       Fill = "Gray"
-                       Data = "M 5,10 L 15,10 L 10,5 L 5,10"/>
-            </DockPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="HeaderTemplateArrowDown">
-            <DockPanel>
-                <TextBlock HorizontalAlignment="Center" Text="{Binding}"/>
-                <Path   x:Name="arrow"
-                        StrokeThickness = "1"
-                        Fill = "Gray"
-                        Data = "M 5,5 L 10,10 L 15,5 L 5,5"/>
-            </DockPanel>
-        </DataTemplate>
-
-        <Style x:Key="buttonStyle">
-            <Setter Property="Button.FontSize" Value="12"/>
-            <Setter Property="Button.Background" Value="Purple"/>
-            <Setter Property="Button.Foreground" Value="White"/>
-        </Style>
-
-        <Style x:Key="menuStyle" TargetType="{x:Type Menu}">
-            <Setter Property="Menu.FontSize" Value="12"/>
-            <Setter Property="Menu.Background" Value="Purple"/>
-        </Style>
-
-        <Style x:Key="menuItem" TargetType="{x:Type MenuItem}">
-            <Setter Property="Menu.FontSize" Value="12"/>
-            <Setter Property="Menu.Background" Value="Purple"/>
-            <Setter Property="Menu.Foreground" Value="White"/>
-        </Style>
-
-        <Style x:Key="textBoxStyle" TargetType="{x:Type TextBox}">
-            <Style.Setters>
-                <Setter Property="Margin" Value="8,5,8,5"/>
-                <Setter Property="Background" Value="White"/>
-                <Setter Property="MinWidth" Value="100"/>
-            </Style.Setters>
-            <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="True">
-                    <Setter Property="Background" Value="Salmon"/>
-                    <Setter Property="ToolTip"
-                        Value="{Binding RelativeSource={RelativeSource Self},
-                        Path=(Validation.Errors)[0].ErrorContent}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="comboBoxStyle" TargetType="{x:Type ComboBox}">
-            <Setter Property="Margin" Value="8,5,8,5"/>
-            <Setter Property="MinWidth" Value="100"/>
-        </Style>
-
-        <Style x:Key="listViewStyle" TargetType="{x:Type ListView}">
-            <Setter Property="FontSize" Value="14"></Setter>
-        </Style>
-
-        <Style TargetType="{x:Type TextBox}">
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Margin" Value="0,2,40,2" />
-            <Setter Property="Validation.ErrorTemplate">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <DockPanel LastChildFill="true">
-                            <Border Background="Red" DockPanel.Dock="right" Margin="5,0,0,0" Width="20" Height="20" CornerRadius="10"
-                                    ToolTip="{Binding ElementName=customAdorner, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
-                                <TextBlock Text="!" VerticalAlignment="center" HorizontalAlignment="center" FontWeight="Bold" Foreground="white">
-                                </TextBlock>
-                            </Border>
-                            <AdornedElementPlaceholder Name="customAdorner" VerticalAlignment="Center" >
-                                <Border BorderBrush="red" BorderThickness="1" />
-                            </AdornedElementPlaceholder>
-                        </DockPanel>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Validation.ErrorTemplate">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <DockPanel LastChildFill="true">
-                            <Border Background="Red" DockPanel.Dock="right" Margin="5,0,0,0" Width="20" Height="20" CornerRadius="10"
-                                    ToolTip="{Binding ElementName=customAdorner, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
-                                <TextBlock Text="!" VerticalAlignment="center" HorizontalAlignment="center" FontWeight="Bold" Foreground="white">
-                                </TextBlock>
-                            </Border>
-                            <AdornedElementPlaceholder Name="customAdorner" VerticalAlignment="Center" >
-                                <Border BorderBrush="red" BorderThickness="1" />
-                            </AdornedElementPlaceholder>
-                        </DockPanel>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="gvHeader" TargetType="{x:Type GridViewColumnHeader}">
-            <Setter Property="Background" Value="Purple"/>
-            <Setter Property="Foreground" Value="White"/>
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources\Shared.xaml" />
+                <ResourceDictionary Source="Resources\Button.xaml" />
+                <!--<ResourceDictionary Source="Resources\CheckBox.xaml" />
+                <ResourceDictionary Source="Resources\RadioButton.xaml" />-->
+                <ResourceDictionary Source="Resources\ComboBox.xaml" />
+                <ResourceDictionary Source="Resources\ListBox.xaml" />
+                <ResourceDictionary Source="Resources\Menu.xaml" />
+                <!--<ResourceDictionary Source="Resources\ScrollBar.xaml" />
+                <ResourceDictionary Source="Resources\Expander.xaml" />
+                <ResourceDictionary Source="Resources\GroupBox.xaml" />-->
+                <ResourceDictionary Source="Resources\Label.xaml" />
+                <!--<ResourceDictionary Source="Resources\TabControl.xaml" />
+                <ResourceDictionary Source="Resources\ProgressBar.xaml" />
+                <ResourceDictionary Source="Resources\Slider.xaml" />-->
+                <ResourceDictionary Source="Resources\TextBox.xaml" />
+                <ResourceDictionary Source="Resources\ToolTip.xaml" />
+                <!--<ResourceDictionary Source="Resources\TreeView.xaml" />
+                <ResourceDictionary Source="Resources\Frame.xaml" />-->
+                <ResourceDictionary Source="Resources\ListView.xaml" />
+                <!--<ResourceDictionary Source="Resources\ScrollViewer.xaml" />
+                <ResourceDictionary Source="Resources\ToolBar.xaml" />
+                <ResourceDictionary Source="Resources\StatusBar.xaml" />
+                <ResourceDictionary Source="Resources\DocumentViewer.xaml" />-->
+                <ResourceDictionary Source="Resources\Window.xaml" />
+                <!--<ResourceDictionary Source="Resources\NavigationWindow.xaml" />
+                <ResourceDictionary Source="Resources\Calendar.xaml"/>
+                <ResourceDictionary Source="Resources\DataGrid.xaml"/>
+                <ResourceDictionary Source="Resources\DatePicker.xaml"/>-->
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
